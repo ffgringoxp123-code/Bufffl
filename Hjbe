@@ -1,31 +1,23 @@
 local Players = game:GetService("Players")
-
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
-
 local gui = Instance.new("ScreenGui")
 gui.Name = "WelcomeMessage"
 gui.ResetOnSpawn = false
 gui.Parent = playerGui
-
 local text = Instance.new("TextLabel")
 text.Parent = gui
 text.AnchorPoint = Vector2.new(0.5, 0.5)
-
 text.Position = UDim2.new(0.5, 50, 0.5, 0)
-
 text.Size = UDim2.new(0, 700, 0, 250)
 text.BackgroundTransparency = 1
-
 text.TextColor3 = Color3.fromRGB(255, 255, 255)
 text.TextStrokeTransparency = 0
 text.Font = Enum.Font.GothamBold
 text.TextSize = 16
-
 text.TextWrapped = false
 text.TextXAlignment = Enum.TextXAlignment.Left
 text.TextYAlignment = Enum.TextYAlignment.Top
-
 text.Text = [[
       🇺🇲🇬🇧                                  🇻🇳
 
@@ -45,7 +37,5 @@ text.Text = [[
 ]]
 
 task.wait(5)
-
 gui:Destroy()
-
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ffgringoxp123-code/mi.wtf/refs/heads/main/Bbgy"))()
